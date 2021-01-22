@@ -171,10 +171,13 @@ module top;
         mul_op: predicted_result = A * B;
       endcase // case (op_set)
 
-      if ((op_set != no_op) && (op_set != rst_op))
+	  if ((op_set != no_op) && (op_set != rst_op)) begin
         if (predicted_result != result)
           $error ("FAILED: A: %0h  B: %0h  op: %s result: %0h",
                   A, B, op_set.name(), result);
+			  else
+		 $display ("PASSED: A: %0h  B: %0h  op: %s result: %0h",A, B, op_set.name(), result);
+	end
 
    end : scoreboard
    
@@ -212,6 +215,12 @@ module top;
       end
       $stop;
    end : tester
+   //dump fsdb
+   initial begin
+   $fsdbDumpfile("tinyalu.fsdb");
+   $fsdbDumpvars(0,top);
+   end
+
 endmodule : top
 
 
